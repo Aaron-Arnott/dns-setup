@@ -1,0 +1,47 @@
+version: '3.7'
+
+x-unbound: &unbound_template
+  build: unbound
+  image: unbound-tls:latest
+  restart: unless-stopped
+  mem_limit: 100m
+
+services:
+  pihole:
+    build: pihole
+    image: pihole-with-adlists:latest
+    restart: unless-stopped
+    ports:
+      - '53:53/udp'
+      - '53:53/tcp'
+      - '67:67/udp'
+      - '80:80/tcp'
+      - '443:443/tcp'
+    environment:
+      DNS1: "172.42.0.10#5300"
+      DNS2: "172.42.0.20#5301"
+      WEBPASSWORD: ${PIHOLE_PASSWORD}
+      VIRTUAL_HOST: pi.hole
+      ServerIP: ${HOST_IP_ADDRESS} # when you lookup pi.hole this is what's returned
+      DNSSEC: "true"
+    networks:
+      - backend
+
+  unbound:
+    <<: *unbound_template
+    networks:
+      backend:
+        ipv4_address: 172.42.0.10
+
+  unbound2:
+    <<: *unbound_template
+    networks:
+      backend:
+        ipv4_address: 172.42.0.20
+
+networks:
+  backend:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.42.0.0/16
