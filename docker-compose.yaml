@@ -4,7 +4,7 @@ x-unbound: &unbound_template
   build: unbound
   image: unbound-tls:latest
   restart: unless-stopped
-  mem_limit: 100mi
+  mem_limit: 100m
   volumes:
     - '/etc/timezone:/etc/timezone:ro'
     - '/etc/localtime:/etc/localtime:ro'
