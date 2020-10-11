@@ -25,7 +25,7 @@ services:
       - '443:443/tcp'
     environment:
       DNS1: "172.42.0.10#5300"
-      DNS2: "172.42.0.20#5301"
+      DNS2: "172.42.0.20#5300"
       WEBPASSWORD: ${PIHOLE_PASSWORD}
       VIRTUAL_HOST: pi.hole
       ServerIP: ${HOST_IP_ADDRESS} # when you lookup pi.hole this is what's returned
