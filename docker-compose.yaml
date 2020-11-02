@@ -17,6 +17,8 @@ services:
     volumes:
       - '/etc/timezone:/etc/timezone:ro'
       - '/etc/localtime:/etc/localtime:ro'
+      - 'pihole-pihole-cache:/etc/pihole/'
+      - 'pihole-dnsmasq-cache:/etc/dnsmasq.d'
     ports:
       - '53:53/udp'
       - '53:53/tcp'
@@ -29,7 +31,6 @@ services:
       WEBPASSWORD: ${PIHOLE_PASSWORD}
       VIRTUAL_HOST: pi.hole
       ServerIP: ${HOST_IP_ADDRESS} # when you lookup pi.hole this is what's returned
-      DNSSEC: "true"
     networks:
       - backend
 
@@ -44,6 +45,10 @@ services:
     networks:
       backend:
         ipv4_address: 172.42.0.20
+
+volumes:
+  pihole-pihole-cache:
+  pihole-dnsmasq-cache:
 
 networks:
   backend:
